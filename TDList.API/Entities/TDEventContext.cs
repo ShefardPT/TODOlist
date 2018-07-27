@@ -8,6 +8,11 @@ namespace TDList.API.Entities
 {
     public class TDEventContext : DbContext
     {
+        public TDEventContext(DbContextOptions<TDEventContext> options) : base(options)
+        {
+            Database.Migrate();
+        }
+
         DbSet<TDEvent> TDEvents { get; set; }
     }
 }

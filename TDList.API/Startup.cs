@@ -34,6 +34,9 @@ namespace TDList.API
             }
 
             app.UseMvc();
+
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug();
         }
     }
 }
