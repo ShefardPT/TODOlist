@@ -13,7 +13,7 @@ namespace TDList.API.Entities
             Database.Migrate();
         }
 
-        DbSet<TDEvent> TDEvents { get; set; }
+        public DbSet<TDEvent> TDEvents { get; set; }
     }
 }
     

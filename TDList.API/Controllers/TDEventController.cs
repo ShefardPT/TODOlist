@@ -3,24 +3,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TDList.API.Entities;
 
 namespace TDList.API.Controllers
 {
+    [Route("api/events")]
     public class TDEventController : Controller
     {
-        private TDEventContext _ctx;
-
-        public TDEventController(TDEventContext ctx)
+        private Services.ITDEventRepository _TDEventRep;
+        public TDEventController(Services.ITDEventRepository TDEventRep)
         {
-            _ctx = ctx;
+            _TDEventRep = TDEventRep;
         }
-
+        
         [HttpGet]
-        [Route("api/start")]
-        public IActionResult Start()
+        public IActionResult GetTDList()
         {
-            return Ok();
+            var TDList = _TDEventRep.GetTDList();
+            var result = AutoMapper.Mapper.Map<IEnumerable<Models.TDEventDTO>>(TDList);
+
+            return Ok(result);
         }
+
+        [HttpGet("{TDEventID}")]
+        public IActionResult GetTDEvent(int TDEventID)
+        {
+            var tdEvent = _TDEventRep.GetTDEvent(TDEventID);
+            var result = AutoMapper.Mapper.Map<Models.TDEventDTO>(tdEvent);
+
+            return Ok(result);
+        }
+
     }
 }
