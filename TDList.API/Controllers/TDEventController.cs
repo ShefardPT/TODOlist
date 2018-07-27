@@ -49,5 +49,16 @@ namespace TDList.API.Controllers
             return CreatedAtRoute(path, result);
         }
 
+        [HttpDelete("{TDEventID}")]
+        public IActionResult DeleteTDEvent(int TDEventID)
+        {
+            _TDEventRep.DeleteTDEvent(TDEventID);
+            if(!_TDEventRep.IsSaved())
+            {
+                return StatusCode(500);
+            }
+            return NoContent();
+        }
+
     }
 }

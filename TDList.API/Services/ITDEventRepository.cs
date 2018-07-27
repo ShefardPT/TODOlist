@@ -13,12 +13,12 @@ namespace TDList.API.Services
         Entities.TDEvent GetTDEvent(int TDEventID);
 
         void PostTDEvent(Entities.TDEvent tdEventToAdd);
-        
+
         //void PutTDEvent(int TDEventID);
 
         //void PatchTDEvent(int TDEventID);
 
-        //void DeleteTDEvent(int TDEventID);
+        void DeleteTDEvent(int TDEventID);
 
         bool IsSaved();
     }

@@ -30,6 +30,11 @@ namespace TDList.API.Services
             _ctx.Add(tdEventToAdd);
         }
 
+        public void DeleteTDEvent(int TDEventID)
+        {
+            _ctx.Remove(_ctx.TDEvents.Where(p => p.Id == TDEventID).FirstOrDefault());
+        }
+
         public bool IsSaved()
         {
             return (_ctx.SaveChanges() >= 0);
