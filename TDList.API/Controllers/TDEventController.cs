@@ -33,5 +33,21 @@ namespace TDList.API.Controllers
             return Ok(result);
         }
 
+        [HttpPost]
+        public IActionResult PostTDEvent([FromBody] Models.TDEventToAdd tdEventToAdd)
+        {
+            var result = AutoMapper.Mapper.Map<Entities.TDEvent>(tdEventToAdd);
+
+            _TDEventRep.PostTDEvent(result);
+            if (!_TDEventRep.IsSaved())
+            {
+                return StatusCode(500);
+            }
+
+            string path = "api/events/" + result.Id;
+            
+            return CreatedAtRoute(path, result);
+        }
+
     }
 }

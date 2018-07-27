@@ -25,9 +25,14 @@ namespace TDList.API.Services
             return _ctx.TDEvents.OrderBy(o => o.Urgency).ToList();
         }
 
-        public void PostTDEvent([FromBody] Models.TDEventToAdd tdEventToAdd)
+        public void PostTDEvent(Entities.TDEvent tdEventToAdd)
         {
-            
+            _ctx.Add(tdEventToAdd);
+        }
+
+        public bool IsSaved()
+        {
+            return (_ctx.SaveChanges() >= 0);
         }
     }
 }
