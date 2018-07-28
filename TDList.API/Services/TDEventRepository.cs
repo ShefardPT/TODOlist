@@ -22,7 +22,7 @@ namespace TDList.API.Services
 
         public IEnumerable<Entities.TDEvent> GetTDList()
         {
-            return _ctx.TDEvents.OrderBy(o => o.Urgency).ToList();
+            return _ctx.TDEvents.OrderByDescending(o => o.Urgency).ToList();
         }
 
         public void PostTDEvent(Entities.TDEvent tdEventToAdd)

@@ -19,7 +19,7 @@ namespace TDList.API.Services
         //void PatchTDEvent(int TDEventID);
 
         void DeleteTDEvent(int TDEventID);
-
+        
         bool IsSaved();
     }
 }

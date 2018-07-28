@@ -58,7 +58,9 @@ namespace TDList.API
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Entities.TDEvent, Models.TDEventDTO>();
-                cfg.CreateMap<Models.TDEventToAdd, Entities.TDEvent>();
+                cfg.CreateMap<Entities.TDEvent, Models.TDEventToManip>();
+                cfg.CreateMap<Models.TDEventDTO, Entities.TDEvent>();
+                cfg.CreateMap<Models.TDEventToManip, Entities.TDEvent>();
             });
         }
     }
