@@ -37,7 +37,7 @@ namespace TDList.API
             services.AddDbContext<Entities.TDEventContext>(o => o.UseSqlServer(connectionString));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, Entities.TDEventContext tdEventContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Entities.TDEventContext tdEventContext)
         {
             if (env.IsDevelopment())
             {
@@ -50,8 +50,6 @@ namespace TDList.API
 
             app.UseMvc();
 
-            loggerFactory.AddConsole();
-            loggerFactory.AddDebug();
 
             tdEventContext.EnsureSeedDataForContext();
 
@@ -60,6 +58,7 @@ namespace TDList.API
                 cfg.CreateMap<Entities.TDEvent, Models.TDEventDTO>();
                 cfg.CreateMap<Entities.TDEvent, Models.TDEventToManip>();
                 cfg.CreateMap<Models.TDEventDTO, Entities.TDEvent>();
+                cfg.CreateMap<Models.TDEventDTOtoAdd, Entities.TDEvent>();
                 cfg.CreateMap<Models.TDEventToManip, Entities.TDEvent>();
             });
         }

@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NLog.Common;
+
 
 namespace TDList.API.Controllers
 {
@@ -39,14 +41,24 @@ namespace TDList.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostTDEvent([FromBody] Models.TDEventToManip tdEventToAdd)
+        public IActionResult AddTDEvent([FromBody] Models.TDEventToManip tdEventToAdd)
         {
+            if(tdEventToAdd == null)
+            {
+                return BadRequest();
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = AutoMapper.Mapper.Map<Entities.TDEvent>(tdEventToAdd);
 
-            _TDEventRep.PostTDEvent(result);
+            _TDEventRep.AddTDEvent(result);
+
             if (!_TDEventRep.IsSaved())
             {
-                return StatusCode(500);
+                return StatusCode(500, "Server do not respond");
             }
 
             string path = "api/events/" + result.Id;
@@ -55,8 +67,13 @@ namespace TDList.API.Controllers
         }
 
         [HttpPut("{TDEventID}")]
-        public IActionResult PutTDEvent(int TDEventID, [FromBody] Models.TDEventToManip tdEventToPut)
+        public IActionResult UpdateTDEvent(int TDEventID, [FromBody] Models.TDEventToManip tdEventToPut)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var tdEvent = _TDEventRep.GetTDEvent(TDEventID);
             if (tdEvent == null)
             {
@@ -66,7 +83,7 @@ namespace TDList.API.Controllers
 
             if (!_TDEventRep.IsSaved())
             {
-                return StatusCode(500);
+                return StatusCode(500, "Server do not respond");
             }
 
             return NoContent();
@@ -90,20 +107,27 @@ namespace TDList.API.Controllers
 
             if (!_TDEventRep.IsSaved())
             {
-                return StatusCode(500);
+                return StatusCode(500, "Server do not respond");
             }
 
             return NoContent();
         }
 
         [HttpDelete("{TDEventID}")]
-        public IActionResult DeleteTDEvent(int TDEventID)
+        public IActionResult RemoveTDEvent(int TDEventID)
         {
-            _TDEventRep.DeleteTDEvent(TDEventID);
+            if(!_TDEventRep.IsExist(TDEventID))
+            {
+                return NotFound();
+            }
+
+            _TDEventRep.RemoveTDEvent(TDEventID);
+
             if(!_TDEventRep.IsSaved())
             {
-                return StatusCode(500);
+                return StatusCode(500, "Server do not respond");
             }
+
             return NoContent();
         }
 

@@ -25,15 +25,22 @@ namespace TDList.API.Services
             return _ctx.TDEvents.OrderByDescending(o => o.Urgency).ToList();
         }
 
-        public void PostTDEvent(Entities.TDEvent tdEventToAdd)
+        public void AddTDEvent(Entities.TDEvent tdEventToAdd)
         {
             _ctx.Add(tdEventToAdd);
         }
 
-        public void DeleteTDEvent(int TDEventID)
+        public void RemoveTDEvent(int TDEventID)
         {
             _ctx.Remove(_ctx.TDEvents.Where(p => p.Id == TDEventID).FirstOrDefault());
         }
+
+
+        public bool IsExist(int TDEventID)
+        {
+            return _ctx.TDEvents.Any(i => i.Id == TDEventID);
+        }
+
 
         public bool IsSaved()
         {
