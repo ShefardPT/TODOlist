@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using NLog.Extensions.Logging;
 
 namespace TDList.API
 {
@@ -37,8 +38,10 @@ namespace TDList.API
             services.AddDbContext<Entities.TDEventContext>(o => o.UseSqlServer(connectionString));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Entities.TDEventContext tdEventContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, Entities.TDEventContext tdEventContext)
         {
+            loggerFactory.AddNLog();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -49,7 +52,6 @@ namespace TDList.API
             }
 
             app.UseMvc();
-
 
             tdEventContext.EnsureSeedDataForContext();
 

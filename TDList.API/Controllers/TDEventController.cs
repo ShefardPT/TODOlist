@@ -17,19 +17,26 @@ namespace TDList.API.Controllers
         {
             _TDEventRep = TDEventRep;
         }
+
+        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         
         [HttpGet]
         public IActionResult GetTDList()
         {
+            _logger.Debug("TDList was requested");
+
             var TDList = _TDEventRep.GetTDList();
             var result = AutoMapper.Mapper.Map<IEnumerable<Models.TDEventDTO>>(TDList);
 
+            _logger.Info("TDList was requested successfully");
             return Ok(result);
         }
 
         [HttpGet("{TDEventID}")]
         public IActionResult GetTDEvent(int TDEventID)
         {
+            _logger.Debug($"TDEvent with ID {TDEventID} was requested");
+
             var tdEvent = _TDEventRep.GetTDEvent(TDEventID);
             if(tdEvent == null)
             {
@@ -37,12 +44,15 @@ namespace TDList.API.Controllers
             }
             var result = AutoMapper.Mapper.Map<Models.TDEventDTO>(tdEvent);
 
+            _logger.Debug($"TDEvent with ID {TDEventID} was requested successfully");
             return Ok(result);
         }
 
         [HttpPost]
         public IActionResult AddTDEvent([FromBody] Models.TDEventToManip tdEventToAdd)
         {
+            _logger.Debug("Method to add new TDEvent was called");
+
             if(tdEventToAdd == null)
             {
                 return BadRequest();
@@ -54,15 +64,24 @@ namespace TDList.API.Controllers
 
             var result = AutoMapper.Mapper.Map<Entities.TDEvent>(tdEventToAdd);
 
-            _TDEventRep.AddTDEvent(result);
+            try
+            {
+                _TDEventRep.AddTDEvent(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception was throwed while addiction TDEvent: ", ex);
+            }
 
             if (!_TDEventRep.IsSaved())
             {
-                return StatusCode(500, "Server do not respond");
+                _logger.Warn("TDList hasn`t been saved while addition TDEvent");
+                return StatusCode(500, "Server do not respond.");
             }
 
             string path = "api/events/" + result.Id;
             
+            _logger.Info("TDEvent has been successfully added: " + path);
             return CreatedAtRoute(path, result);
         }
 
@@ -83,9 +102,11 @@ namespace TDList.API.Controllers
 
             if (!_TDEventRep.IsSaved())
             {
+                _logger.Warn("TDList hasn`t been saved while updating TDEvent");
                 return StatusCode(500, "Server do not respond");
             }
 
+            _logger.Info($"TDEvent with ID {TDEventID} has been successfully updated.");
             return NoContent();
         }
 
@@ -107,9 +128,11 @@ namespace TDList.API.Controllers
 
             if (!_TDEventRep.IsSaved())
             {
+                _logger.Warn("TDList hasn`t been saved while patching TDEvent.");
                 return StatusCode(500, "Server do not respond");
             }
 
+            _logger.Info($"TDEvent with ID {TDEventID} has been successfully patched.");
             return NoContent();
         }
 
@@ -125,9 +148,11 @@ namespace TDList.API.Controllers
 
             if(!_TDEventRep.IsSaved())
             {
+                _logger.Warn("TDList hasn`t been saved while removing TDEvent");
                 return StatusCode(500, "Server do not respond");
             }
 
+            _logger.Info($"TDEvent with ID {TDEventID} has been successfully removed.");
             return NoContent();
         }
 
