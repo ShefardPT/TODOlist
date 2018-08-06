@@ -20,7 +20,7 @@ namespace TDList.API.Entities
             }
             catch (Exception ex)
             {
-                _logger.Debug("Thrown exception while database migration", ex);
+                _logger.Error("Thrown exception while database migration", ex);
             }
 
         }

@@ -78,13 +78,8 @@ namespace TDList.API.Controllers
                 _logger.Warn("TDList hasn`t been saved while addition TDEvent");
                 return StatusCode(500, "Server do not respond.");
             }
-
-            //string path = "api/events/" + result.Id;
-
-            //_logger.Info("TDEvent has been successfully added: " + path);
-
-
-            _logger.Info("TDEvent has been successfully added: " + "api/events/" + result.Id);
+            
+            _logger.Info("TDEvent has been successfully added: api/events/" + result.Id);
             return CreatedAtRoute(result.Id, result);
         }
 

@@ -12,9 +12,13 @@ namespace TDList.API
 {
     public class Program
     {
+        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
+
+            _logger.Debug("Application was started");
         }
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
