@@ -60,7 +60,6 @@ namespace TDList.API
                 cfg.CreateMap<Entities.TDEvent, Models.TDEventDTO>();
                 cfg.CreateMap<Entities.TDEvent, Models.TDEventToManip>();
                 cfg.CreateMap<Models.TDEventDTO, Entities.TDEvent>();
-                cfg.CreateMap<Models.TDEventDTOtoAdd, Entities.TDEvent>();
                 cfg.CreateMap<Models.TDEventToManip, Entities.TDEvent>();
             });
         }
