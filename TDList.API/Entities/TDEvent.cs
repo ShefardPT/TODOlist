@@ -8,6 +8,7 @@ using TODOlist.API;
 
 namespace TDList.API.Entities
 {
+    // Entity of todo-list event
     public class TDEvent
     {
         [Key]

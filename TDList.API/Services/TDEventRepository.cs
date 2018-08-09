@@ -6,18 +6,23 @@ using System.Threading.Tasks;
 
 namespace TDList.API.Services
 {
+    // todo-list events repository 
     public class TDEventRepository : ITDEventRepository
     {
+        // Injecting TDEventContext as a store of TDEvent entities
         private Entities.TDEventContext _ctx;
 
+        // Initializing logger
         public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
+        // Initializing repository
         public TDEventRepository(Entities.TDEventContext ctx)
         {
             _ctx = ctx;
             _logger.Debug("TDEventRepository initialized");
         }
 
+        // Getting list of all events as IEnumerable<Entities.TDEvent>
         public Entities.TDEvent GetTDEvent(int TDEventID)
         {
             try
@@ -28,11 +33,12 @@ namespace TDList.API.Services
             }
             catch (Exception ex)
             {
-                _logger.Error("Thrown exception while calling method GetTDEvent", ex);
+                _logger.Error(ex, "Thrown exception while calling method GetTDEvent");
                 throw ex;
             }
         }
 
+        // Getting exact event with ID == TDEventID as parameter
         public IEnumerable<Entities.TDEvent> GetTDList()
         {
             try
@@ -43,11 +49,12 @@ namespace TDList.API.Services
             }
             catch (Exception ex)
             {
-                _logger.Error("Thrown exception while calling method GetTDList", ex);
+                _logger.Error(ex, "Thrown exception while calling method GetTDList");
                 throw ex;
             }
         }
 
+        // Addition new event == tdEventToAdd as parameter
         public void AddTDEvent(Entities.TDEvent tdEventToAdd)
         {
             try
@@ -56,11 +63,12 @@ namespace TDList.API.Services
             }
             catch (Exception ex)
             {
-                _logger.Error("Thrown exception while calling method AddTDEvent", ex);
+                _logger.Error(ex, "Thrown exception while calling method AddTDEvent");
                 throw ex;
             }
         }
 
+        // Removing exact event with ID == TDEventID as parameter
         public void RemoveTDEvent(int TDEventID)
         {
             try
@@ -69,12 +77,12 @@ namespace TDList.API.Services
             }
             catch (Exception ex)
             {
-                _logger.Error("Thrown exception while calling method RemoveTDEvent", ex);
+                _logger.Error(ex, "Thrown exception while calling method RemoveTDEvent");
                 throw ex;
             }
         }
 
-
+        // Checking if exact event with ID == TDEventID as parameter is exist
         public bool IsExist(int TDEventID)
         {
             try
@@ -85,12 +93,12 @@ namespace TDList.API.Services
             }
             catch (Exception ex)
             {
-                _logger.Error("Thrown exception while calling method IsExist", ex);
+                _logger.Error(ex, "Thrown exception while calling method IsExist");
                 throw ex;
             }
         }
 
-
+        // Checking if event is saved using SaveChanges() method of context
         public bool IsSaved()
         {
             try
@@ -101,7 +109,7 @@ namespace TDList.API.Services
             }
             catch (Exception ex)
             {
-                _logger.Error("Thrown exception while calling method IsSaved", ex);
+                _logger.Error(ex, "Thrown exception while calling method IsSaved");
                 throw ex;
             }
         }

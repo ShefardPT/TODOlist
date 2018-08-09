@@ -8,6 +8,7 @@ namespace TDList.API.Entities
 {
     public class TDEventContext : DbContext
     {
+        // Initializing logger
         public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
 
         public TDEventContext(DbContextOptions<TDEventContext> options) : base(options)
@@ -20,11 +21,12 @@ namespace TDList.API.Entities
             }
             catch (Exception ex)
             {
-                _logger.Error("Thrown exception while database migration", ex);
+                _logger.Error(ex, "Thrown exception while database migration");
             }
 
         }
 
+        // Store for TDEvent entities
         public DbSet<TDEvent> TDEvents { get; set; }
     }
 }

@@ -6,6 +6,8 @@ using TODOlist.API;
 
 namespace TDList.API.Models
 {
+    // Model of todo-list event without ID. 
+    // Designed for manipulation actions like addition and editing
     public class TDEventToManip
     {
         public string Name { get; set; }
@@ -15,6 +17,5 @@ namespace TDList.API.Models
         public Status.Importance Importance { get; set; }
 
         public Status.Urgency Urgency { get; set; }
-        
     }
 }

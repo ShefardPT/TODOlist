@@ -9,6 +9,7 @@ using NLog.Common;
 
 namespace TDList.API.Controllers
 {
+    // Controller for todo-list
     [Route("api/events")]
     public class TDEventController : Controller
     {
@@ -18,8 +19,10 @@ namespace TDList.API.Controllers
             _TDEventRep = TDEventRep;
         }
 
+        // Initializing logger
         public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
         
+        // Getting whole list of events
         [HttpGet]
         public IActionResult GetTDList()
         {
@@ -32,6 +35,7 @@ namespace TDList.API.Controllers
             return Ok(result);
         }
 
+        // Getting exact event
         [HttpGet("{TDEventID}")]
         public IActionResult GetTDEvent(int TDEventID)
         {
@@ -48,6 +52,7 @@ namespace TDList.API.Controllers
             return Ok(result);
         }
 
+        // Addition new event to database
         [HttpPost]
         public IActionResult AddTDEvent([FromBody] Models.TDEventToManip tdEventToAdd)
         {
@@ -70,7 +75,7 @@ namespace TDList.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Error("Exception was throwed while addiction TDEvent: ", ex);
+                _logger.Error(ex, "Exception was throwed while addiction TDEvent: ");
             }
 
             if (!_TDEventRep.IsSaved())
@@ -83,6 +88,7 @@ namespace TDList.API.Controllers
             return CreatedAtRoute(result.Id, result);
         }
 
+        // Updating whole event
         [HttpPut("{TDEventID}")]
         public IActionResult UpdateTDEvent(int TDEventID, [FromBody] Models.TDEventToManip tdEventToPut)
         {
@@ -108,6 +114,7 @@ namespace TDList.API.Controllers
             return NoContent();
         }
 
+        // Updating event partly
         [HttpPatch("{TDEventID}")]
         public IActionResult PatchTDEvent(int TDEventID, [FromBody] JsonPatchDocument<Models.TDEventToManip> patchDocument)
         {
@@ -134,6 +141,7 @@ namespace TDList.API.Controllers
             return NoContent();
         }
 
+        // Removing event from database
         [HttpDelete("{TDEventID}")]
         public IActionResult RemoveTDEvent(int TDEventID)
         {

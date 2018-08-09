@@ -6,6 +6,7 @@ using TODOlist.API;
 
 namespace TDList.API.Models
 {
+    // Basic model of todo-list event
     public class TDEventDTO
     {
         public int Id { get; set; }
@@ -17,7 +18,5 @@ namespace TDList.API.Models
         public Status.Importance Importance { get; set; }
 
         public Status.Urgency Urgency { get; set; }
-
-        
     }
 }
