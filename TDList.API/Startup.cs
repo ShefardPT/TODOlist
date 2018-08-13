@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using NLog.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace TDList.API
 {
@@ -34,12 +35,21 @@ namespace TDList.API
 
             services.AddScoped<Services.ITDEventRepository, Services.TDEventRepository>();
 
-            var connectionString = Startup.Configuration["connectionString:TDListDBConnectionString"];
+            var connectionString = Startup.Configuration["connectionString:Default"];
+
+            services.AddDbContext<Entities.UsersContext>(o => o.UseSqlServer(connectionString));
+
+            services.AddIdentity <Entities.AppUser, IdentityRole> ()
+                                            .AddEntityFrameworkStores<Entities.UsersContext>()
+                                            .AddDefaultTokenProviders();
+
             services.AddDbContext<Entities.TDEventContext>(o => o.UseSqlServer(connectionString));
-        }
+        }   
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, Entities.TDEventContext tdEventContext)
         {
+            app.UseAuthentication();
+
             loggerFactory.AddNLog();
 
             if (env.IsDevelopment())
