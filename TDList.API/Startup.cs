@@ -48,22 +48,31 @@ namespace TDList.API
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, Entities.TDEventContext tdEventContext)
         {
-            app.UseAuthentication();
-
             loggerFactory.AddNLog();
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
-                app.UseExceptionHandler();
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
 
-            app.UseMvc();
+            app.UseHttpsRedirection();  
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
 
-            tdEventContext.EnsureSeedDataForContext();
+            app.UseAuthentication();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             AutoMapper.Mapper.Initialize(cfg =>
             {
