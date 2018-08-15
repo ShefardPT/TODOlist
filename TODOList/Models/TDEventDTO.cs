@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TODOList.Models
 {
-    // Basic model of todo-list event
+    // Basic model of todo-list event as Data-Transfer-Object
     public class TDEventDTO
     {
         public int Id { get; set; }
