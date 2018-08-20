@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TODOList.Controllers
 {
-    [Route("api/account")]
     public class AccountController : Controller
     {
         private UserManager<Entities.AppUser> _userManager;
@@ -26,20 +25,19 @@ namespace TODOList.Controllers
         {
             return View();
         }
-
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody]Models.RegisterView model)
+        public async Task<IActionResult> Register(Models.RegisterView model)
         {
             if (ModelState.IsValid)
             {
-                Entities.AppUser user = new Entities.AppUser {UserName = model.Username, Email = model.Email};
+                Entities.AppUser user = new Entities.AppUser { UserName = model.Username, Email = model.Email};
                 // User addition
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     // Cookie setup
                     await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction();
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -51,30 +49,6 @@ namespace TODOList.Controllers
             }
             return View(model);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public IActionResult Index()
         {
