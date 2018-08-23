@@ -50,9 +50,46 @@ namespace TODOList.Controllers
             return View(model);
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Login(string returnUrl = null)
         {
-            return View();
+            return View(new Models.LoginView { ReturnUrl = returnUrl});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(Models.LoginView model)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberPassword, false);
+                if(result.Succeeded)
+                {
+                    // Checking if URL relates with app
+                    if(!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Incorrect login/password");
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            // Deleting cookie
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
