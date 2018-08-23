@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TODOList.Entities;
 
 namespace TODOList.Services
 {
@@ -10,20 +12,20 @@ namespace TODOList.Services
     public class TDEventRepository : ITDEventRepository
     {
         // Injecting TDEventContext as a store of TDEvent entities
-        private Entities.TDEventContext _ctx;
+        private TDEventContext _ctx;
 
         // Initializing logger
-        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        public static Logger _logger = LogManager.GetCurrentClassLogger();
 
         // Initializing repository
-        public TDEventRepository(Entities.TDEventContext ctx)
+        public TDEventRepository(TDEventContext ctx)
         {
             _ctx = ctx;
             _logger.Debug("TDEventRepository initialized");
         }
 
-        // Getting list of all events as IEnumerable<Entities.TDEvent>
-        public Entities.TDEvent GetTDEvent(int TDEventID)
+        // Getting list of all events as IEnumerable<TDEvent>
+        public TDEvent GetTDEvent(int TDEventID)
         {
             try
             {
@@ -39,7 +41,7 @@ namespace TODOList.Services
         }
 
         // Getting exact event with ID == TDEventID as parameter
-        public IEnumerable<Entities.TDEvent> GetTDList()
+        public IEnumerable<TDEvent> GetTDList()
         {
             try
             {
@@ -55,7 +57,7 @@ namespace TODOList.Services
         }
 
         // Addition new event == tdEventToAdd as parameter
-        public void AddTDEvent(Entities.TDEvent tdEventToAdd)
+        public void AddTDEvent(TDEvent tdEventToAdd)
         {
             try
             {

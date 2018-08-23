@@ -6,6 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using NLog.Common;
 
+using TODOList.Services;
+using AutoMapper;
+using NLog;
+using TODOList.Models;
+using TODOList.Entities;
 
 namespace TODOList.Controllers
 {
@@ -13,14 +18,14 @@ namespace TODOList.Controllers
     [Route("api/events")]
     public class TDEventController : Controller
     {
-        private Services.ITDEventRepository _TDEventRep;
-        public TDEventController(Services.ITDEventRepository TDEventRep)
+        private ITDEventRepository _TDEventRep;
+        public TDEventController(ITDEventRepository TDEventRep)
         {
             _TDEventRep = TDEventRep;
         }
 
         // Initializing logger
-        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        public static Logger _logger = LogManager.GetCurrentClassLogger();
         
         // Getting whole list of events
         [HttpGet]
@@ -29,7 +34,7 @@ namespace TODOList.Controllers
             _logger.Debug("TDList was requested");
 
             var TDList = _TDEventRep.GetTDList();
-            var result = AutoMapper.Mapper.Map<IEnumerable<Models.TDEventDTO>>(TDList);
+            var result = Mapper.Map<IEnumerable<TDEventDTO>>(TDList);
 
             _logger.Info("TDList was requested successfully");
             return Ok(result);
@@ -46,7 +51,7 @@ namespace TODOList.Controllers
             {
                 return NotFound();
             }
-            var result = AutoMapper.Mapper.Map<Models.TDEventDTO>(tdEvent);
+            var result = Mapper.Map<TDEventDTO>(tdEvent);
 
             _logger.Debug($"TDEvent with ID {TDEventID} was requested successfully");
             return Ok(result);
@@ -54,7 +59,7 @@ namespace TODOList.Controllers
 
         // Addition new event to database
         [HttpPost]
-        public IActionResult AddTDEvent([FromBody] Models.TDEventToManip tdEventToAdd)
+        public IActionResult AddTDEvent([FromBody] TDEventToManip tdEventToAdd)
         {
             _logger.Debug("Method to add new TDEvent was called");
 
@@ -67,7 +72,7 @@ namespace TODOList.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = AutoMapper.Mapper.Map<Entities.TDEvent>(tdEventToAdd);
+            var result = Mapper.Map<TDEvent>(tdEventToAdd);
 
             try
             {
@@ -90,7 +95,7 @@ namespace TODOList.Controllers
 
         // Updating whole event
         [HttpPut("{TDEventID}")]
-        public IActionResult UpdateTDEvent(int TDEventID, [FromBody] Models.TDEventToManip tdEventToPut)
+        public IActionResult UpdateTDEvent(int TDEventID, [FromBody] TDEventToManip tdEventToPut)
         {
             if (!ModelState.IsValid)
             {
@@ -102,7 +107,7 @@ namespace TODOList.Controllers
             {
                 return NotFound();
             }
-            AutoMapper.Mapper.Map(tdEventToPut, tdEvent);
+            Mapper.Map(tdEventToPut, tdEvent);
 
             if (!_TDEventRep.IsSaved())
             {
@@ -116,7 +121,7 @@ namespace TODOList.Controllers
 
         // Updating event partly
         [HttpPatch("{TDEventID}")]
-        public IActionResult PatchTDEvent(int TDEventID, [FromBody] JsonPatchDocument<Models.TDEventToManip> patchDocument)
+        public IActionResult PatchTDEvent(int TDEventID, [FromBody] JsonPatchDocument<TDEventToManip> patchDocument)
         {
             var tdEvent = _TDEventRep.GetTDEvent(TDEventID);
             if (tdEvent == null)
@@ -124,12 +129,12 @@ namespace TODOList.Controllers
                 return NotFound();
             }
 
-            var tdEventToPatch = AutoMapper.Mapper.Map<Models.TDEventToManip>(tdEvent);
+            var tdEventToPatch = Mapper.Map<TDEventToManip>(tdEvent);
 
             patchDocument.ApplyTo(tdEventToPatch, ModelState);
 
 
-            AutoMapper.Mapper.Map(tdEventToPatch, tdEvent);
+            Mapper.Map(tdEventToPatch, tdEvent);
 
             if (!_TDEventRep.IsSaved())
             {

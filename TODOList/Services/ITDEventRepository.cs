@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TODOList.Entities;
 
 namespace TODOList.Services
 {
@@ -10,13 +11,13 @@ namespace TODOList.Services
     public interface ITDEventRepository
     {
         // Getting list of all events as IEnumerable<Entities.TDEvent>
-        IEnumerable<Entities.TDEvent> GetTDList();
+        IEnumerable<TDEvent> GetTDList();
         
         // Getting exact event with ID == TDEventID as parameter
-        Entities.TDEvent GetTDEvent(int TDEventID);
+        TDEvent GetTDEvent(int TDEventID);
 
         // Addition new event == tdEventToAdd as parameter
-        void AddTDEvent(Entities.TDEvent tdEventToAdd);
+        void AddTDEvent(TDEvent tdEventToAdd);
 
         // Removing exact event with ID == TDEventID as parameter
         void RemoveTDEvent(int TDEventID);

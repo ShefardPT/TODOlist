@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace TODOList.Entities
     public class AppUserContext :IdentityDbContext<AppUser>
     {
         // Initializing logger
-        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        public static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public AppUserContext(DbContextOptions<AppUserContext> options) : base(options)
         {

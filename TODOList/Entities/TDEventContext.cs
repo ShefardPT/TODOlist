@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace TODOList.Entities
     public class TDEventContext : DbContext
     {
         // Initializing logger
-        public static NLog.Logger _logger = NLog.LogManager.GetCurrentClassLogger();
+        public static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public TDEventContext(DbContextOptions<TDEventContext> options) : base(options)
         {

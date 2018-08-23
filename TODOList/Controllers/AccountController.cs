@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
+using TODOList.Entities;
+using TODOList.Models;
+
 namespace TODOList.Controllers
 {
     public class AccountController : Controller
     {
-        private UserManager<Entities.AppUser> _userManager;
-        private RoleManager<Entities.AppUser> _roleManager;
-        private SignInManager<Entities.AppUser> _signInManager;
+        private UserManager<AppUser> _userManager;
+        private SignInManager<AppUser> _signInManager;
 
         public AccountController(UserManager<Entities.AppUser> userManager,
                                     SignInManager<Entities.AppUser> signInManager)
@@ -26,11 +28,11 @@ namespace TODOList.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Register(Models.RegisterView model)
+        public async Task<IActionResult> Register(RegisterView model)
         {
             if (ModelState.IsValid)
             {
-                Entities.AppUser user = new Entities.AppUser { UserName = model.Username, Email = model.Email};
+                AppUser user = new AppUser { UserName = model.Username, Email = model.Email};
                 // User addition
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
@@ -53,7 +55,7 @@ namespace TODOList.Controllers
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
-            return View(new Models.LoginView { ReturnUrl = returnUrl});
+            return View(new LoginView { ReturnUrl = returnUrl});
         }
 
         [HttpPost]
