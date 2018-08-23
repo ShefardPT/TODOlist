@@ -13,10 +13,12 @@ namespace TODOList.Controllers
     public class UserController : Controller
     {
         private UserManager<AppUser> _userManager;
+        private RoleManager<AppUser> _roleManager;
 
-        public UserController(UserManager<AppUser> userManager)
+        public UserController(UserManager<AppUser> userManager, RoleManager<AppUser> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index() => View(_userManager.Users.ToList());
@@ -94,5 +96,9 @@ namespace TODOList.Controllers
             }
             return RedirectToAction("Index");
         }
+
+
+
+
     }
 }
